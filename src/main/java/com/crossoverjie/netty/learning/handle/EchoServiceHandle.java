@@ -1,9 +1,10 @@
 package com.crossoverjie.netty.learning.handle;
 
-import com.alibaba.fastjson.JSON;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 
 /**
@@ -20,10 +21,11 @@ public class EchoServiceHandle  extends ChannelInboundHandlerAdapter{
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
 
-        LOGGER.info("msg={}", JSON.toJSONString(msg));
+        ByteBuf byteBuf = (ByteBuf) msg;
 
+        LOGGER.info("msg={}", byteBuf.toString(CharsetUtil.UTF_8));
         //将收到的消息返回发送者
-        channelHandlerContext.write(msg) ;
+        channelHandlerContext.write(byteBuf) ;
     }
 
     @Override
