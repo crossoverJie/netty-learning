@@ -24,7 +24,7 @@ public class EchoServiceHandle  extends ChannelInboundHandlerAdapter{
         ByteBuf byteBuf = (ByteBuf) msg;
 
         LOGGER.info("msg={}", byteBuf.toString(CharsetUtil.UTF_8));
-        //将收到的消息返回发送者
+        //将收到的消息返回给客户端
         channelHandlerContext.write(byteBuf) ;
     }
 
