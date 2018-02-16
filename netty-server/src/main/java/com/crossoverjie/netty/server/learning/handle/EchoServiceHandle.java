@@ -1,9 +1,8 @@
 package com.crossoverjie.netty.server.learning.handle;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 
@@ -31,6 +30,9 @@ public class EchoServiceHandle  extends ChannelInboundHandlerAdapter{
     @Override
     public void channelReadComplete(ChannelHandlerContext channelHandlerContext) throws Exception {
 
+        //将未决消息冲刷到远程节点，并关闭连接
+        channelHandlerContext.writeAndFlush(Unpooled.EMPTY_BUFFER)
+                .addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override
