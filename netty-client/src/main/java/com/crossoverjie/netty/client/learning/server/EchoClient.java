@@ -12,7 +12,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.net.InetSocketAddress;
 
 /**
- * Function:
+ * Function:客户端
  *
  * @author crossoverJie
  *         Date: 16/02/2018 18:09
