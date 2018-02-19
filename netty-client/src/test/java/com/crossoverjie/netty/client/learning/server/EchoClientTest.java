@@ -5,8 +5,11 @@ import io.netty.buffer.Unpooled;
 import io.netty.util.ByteProcessor;
 import io.netty.util.CharsetUtil;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 public class EchoClientTest {
+
+    private final static Logger LOGGER = org.slf4j.LoggerFactory.getLogger(EchoClientTest.class);
 
     @Test
     public void test() {
@@ -26,7 +29,7 @@ public class EchoClientTest {
     @Test
     public void readByteTest() {
         ByteBuf byteBuf = Unpooled.copiedBuffer("hello", CharsetUtil.UTF_8);
-        while (byteBuf.isReadable()){
+        while (byteBuf.isReadable()) {
             System.out.println((char) byteBuf.readByte());
         }
     }
@@ -36,14 +39,14 @@ public class EchoClientTest {
      */
     @Test
     public void writeByteTest() {
-        ByteBuf byteBuf = Unpooled.copiedBuffer("", CharsetUtil.UTF_8) ;
+        ByteBuf byteBuf = Unpooled.copiedBuffer("", CharsetUtil.UTF_8);
         System.out.println(byteBuf.writableBytes());
-        byteBuf.writeInt(1) ;
+        byteBuf.writeInt(1);
         System.out.println(byteBuf.writableBytes());
 
 
-        for (int i= 0 ;i<=15 ;i++){
-            byteBuf.writeInt(1) ;
+        for (int i = 0; i <= 15; i++) {
+            byteBuf.writeInt(1);
         }
 
         System.out.println(byteBuf.writableBytes());
@@ -54,9 +57,36 @@ public class EchoClientTest {
      */
     @Test
     public void findByteTest() {
-        ByteBuf byteBuf = Unpooled.copiedBuffer("abc\r", CharsetUtil.UTF_8) ;
+        ByteBuf byteBuf = Unpooled.copiedBuffer("abc\r", CharsetUtil.UTF_8);
         int index = byteBuf.forEachByte(ByteProcessor.FIND_CR);
         System.out.println(index);
+    }
+
+    /**
+     * set 方法
+     */
+    @Test
+    public void setByteTest() {
+        ByteBuf byteBuf = Unpooled.copiedBuffer("netty", CharsetUtil.UTF_8);
+
+        System.out.println((char) byteBuf.getByte(0));
+
+        int readerIndex = byteBuf.readerIndex();
+        LOGGER.info("readerIndex={}", readerIndex);
+
+        int writerIndex = byteBuf.writerIndex();
+        LOGGER.info("writerIndex={}", writerIndex);
+
+        byteBuf.setByte(0, (byte) 'b');
+
+        System.out.println((char) byteBuf.getByte(0));
+
+        readerIndex = byteBuf.readerIndex();
+        LOGGER.info("readerIndex={}", readerIndex);
+
+        writerIndex = byteBuf.writerIndex();
+        LOGGER.info("writerIndex={}", writerIndex);
+
     }
 
 }
