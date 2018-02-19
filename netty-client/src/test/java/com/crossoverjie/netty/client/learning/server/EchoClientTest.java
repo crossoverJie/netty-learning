@@ -30,4 +30,22 @@ public class EchoClientTest {
         }
     }
 
+    /**
+     * 写入可用字节
+     */
+    @Test
+    public void writeByteTest() {
+        ByteBuf byteBuf = Unpooled.copiedBuffer("", CharsetUtil.UTF_8) ;
+        System.out.println(byteBuf.writableBytes());
+        byteBuf.writeInt(1) ;
+        System.out.println(byteBuf.writableBytes());
+
+
+        for (int i= 0 ;i<=15 ;i++){
+            byteBuf.writeInt(1) ;
+        }
+
+        System.out.println(byteBuf.writableBytes());
+    }
+
 }
