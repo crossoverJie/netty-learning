@@ -2,6 +2,7 @@ package com.crossoverjie.netty.client.learning.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.util.ByteProcessor;
 import io.netty.util.CharsetUtil;
 import org.junit.Test;
 
@@ -46,6 +47,16 @@ public class EchoClientTest {
         }
 
         System.out.println(byteBuf.writableBytes());
+    }
+
+    /**
+     * 查找换行符
+     */
+    @Test
+    public void findByteTest() {
+        ByteBuf byteBuf = Unpooled.copiedBuffer("abc\r", CharsetUtil.UTF_8) ;
+        int index = byteBuf.forEachByte(ByteProcessor.FIND_CR);
+        System.out.println(index);
     }
 
 }
