@@ -29,6 +29,8 @@ public class EchoClientTest {
     @Test
     public void readByteTest() {
         ByteBuf byteBuf = Unpooled.copiedBuffer("hello", CharsetUtil.UTF_8);
+
+        //至少有一个字节可以被读取
         while (byteBuf.isReadable()) {
             System.out.println((char) byteBuf.readByte());
         }
