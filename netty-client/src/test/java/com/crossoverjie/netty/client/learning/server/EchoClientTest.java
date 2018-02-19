@@ -13,6 +13,21 @@ public class EchoClientTest {
         for (int i = 0; i < byteBuf.capacity(); i++) {
             System.out.println((char) byteBuf.getByte(i));
         }
+
+        System.out.println("===============");
+
+        System.out.println(byteBuf.readerIndex(0).toString(CharsetUtil.UTF_8));
+    }
+
+    /**
+     * 读取所有的可读字节
+     */
+    @Test
+    public void readByteTest() {
+        ByteBuf byteBuf = Unpooled.copiedBuffer("hello", CharsetUtil.UTF_8);
+        while (byteBuf.isReadable()){
+            System.out.println((char) byteBuf.readByte());
+        }
     }
 
 }
