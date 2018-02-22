@@ -7,7 +7,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 /**
- * Function:
+ * Function: 解码器
  *
  * @author crossoverJie
  *         Date: 22/02/2018 23:53
