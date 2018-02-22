@@ -7,6 +7,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 
@@ -29,7 +30,7 @@ public class EchoClient {
 
 
     public static void main(String[] args) throws InterruptedException {
-        new EchoClient().startClient();
+        new EchoClient().startClientOption();
     }
 
 
@@ -93,5 +94,41 @@ public class EchoClient {
             group.shutdownGracefully().sync() ;
         }
 
+    }
+
+
+
+    private void startClientOption() throws InterruptedException {
+        EventLoopGroup group = new NioEventLoopGroup() ;
+
+        AttributeKey<Integer> id = AttributeKey.valueOf("id") ;
+
+        try {
+            Bootstrap bootstrap = new Bootstrap() ;
+            bootstrap.group(group)
+                    .channel(NioSocketChannel.class)
+                    .handler(new SimpleChannelInboundHandler<ByteBuf>() {
+
+                        @Override
+                        public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+                            Integer value = ctx.channel().attr(id).get();
+                            LOGGER.debug("value={}",value) ;
+                        }
+
+                        @Override
+                        protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+                            LOGGER.debug("收到消息={}",msg.toString(CharsetUtil.UTF_8));
+                        }
+                    });
+
+            bootstrap.option(ChannelOption.SO_KEEPALIVE,true)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,5000) ;
+            bootstrap.attr(id,1234) ;
+
+            bootstrap.connect(new InetSocketAddress("www.manning.com", 80)).sync() ;
+
+        }finally {
+            group.shutdownGracefully().sync() ;
+        }
     }
 }
