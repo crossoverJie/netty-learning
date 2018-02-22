@@ -71,15 +71,12 @@ public class EchoService {
                 });
 
         ChannelFuture future = bootstrap.bind(new InetSocketAddress(PORT));
-        future.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (future.isSuccess()){
-                    LOGGER.debug("绑定端口成功");
-                }else {
-                    LOGGER.debug("绑定端口失败");
-                    future.cause().printStackTrace() ;
-                }
+        future.addListener((ChannelFutureListener) channelFuture -> {
+            if (channelFuture.isSuccess()){
+                LOGGER.debug("绑定端口成功");
+            }else {
+                LOGGER.debug("绑定端口失败");
+                channelFuture.cause().printStackTrace() ;
             }
         });
     }
