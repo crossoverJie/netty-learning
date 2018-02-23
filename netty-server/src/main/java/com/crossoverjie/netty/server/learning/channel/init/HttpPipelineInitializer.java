@@ -17,7 +17,9 @@ public class HttpPipelineInitializer extends ChannelInitializer<Channel> {
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
-        ch.pipeline().addLast("decoder", new HttpRequestDecoder())
-                .addLast("encoder", new HttpResponseEncoder());
+        ch.pipeline()
+                .addLast("decoder", new HttpRequestDecoder())
+                .addLast("encoder", new HttpResponseEncoder())
+        ;
     }
 }
