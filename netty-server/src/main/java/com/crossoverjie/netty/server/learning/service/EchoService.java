@@ -1,5 +1,6 @@
 package com.crossoverjie.netty.server.learning.service;
 
+import com.crossoverjie.netty.server.learning.channel.init.HttpPipelineInitializer;
 import com.crossoverjie.netty.server.learning.handle.EchoServiceHandle;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -26,7 +27,7 @@ public class EchoService {
     private final static int PORT = 11211;
 
     public static void main(String[] args) throws InterruptedException {
-        new EchoService().startServer();
+        new EchoService().start();
     }
 
     private void start() throws InterruptedException {
@@ -40,13 +41,14 @@ public class EchoService {
             serverBootstrap.group(group)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(PORT))
-                    .childHandler(new ChannelInitializer() {
+                    /*.childHandler(new ChannelInitializer() {
 
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
                             channel.pipeline().addLast(handle) ;
                         }
-                    });
+                    });*/
+                    .childHandler(new HttpPipelineInitializer()) ;
 
             ChannelFuture future = serverBootstrap.bind().sync() ;
             future.channel().closeFuture().sync() ;
