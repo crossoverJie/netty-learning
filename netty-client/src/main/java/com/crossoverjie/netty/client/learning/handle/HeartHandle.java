@@ -26,8 +26,10 @@ public class HeartHandle extends ChannelInboundHandlerAdapter {
             //如果是超时事件
             ctx.writeAndFlush(byteBuf)
             .addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+        }else {
+            //不是就交给下一个 handler
+            super.userEventTriggered(ctx, evt);
         }
 
-        super.userEventTriggered(ctx, evt);
     }
 }
