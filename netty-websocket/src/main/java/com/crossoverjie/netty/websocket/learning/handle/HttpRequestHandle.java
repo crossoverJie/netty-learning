@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * Function:
+ * Function: 聊天程序的第一步 只是处理 HTTP 请求
  *
  * @author crossoverJie
  *         Date: 24/02/2018 10:15
