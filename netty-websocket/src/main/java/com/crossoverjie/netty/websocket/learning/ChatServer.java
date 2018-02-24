@@ -9,9 +9,14 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.netty.util.concurrent.ImmediateEventExecutor;
+import org.slf4j.Logger;
 
+import javax.net.ssl.SSLException;
 import java.net.InetSocketAddress;
+import java.security.cert.CertificateException;
 
 /**
  * Function: 启动服务
@@ -22,6 +27,8 @@ import java.net.InetSocketAddress;
  */
 public class ChatServer {
 
+    private final static Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ChatServer.class);
+
     private final static int PORT = 11211;
 
     private ChannelGroup channelGroup = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
@@ -30,14 +37,21 @@ public class ChatServer {
 
     private Channel channel;
 
-    public static void main(String[] args) {
+    private static SslContext sslContext ;
+
+    public static void main(String[] args) throws CertificateException, SSLException {
+
+        SelfSignedCertificate cert = new SelfSignedCertificate();
+        sslContext = SslContext.newServerContext(
+                cert.certificate(), cert.privateKey());
+
         ChatServer chatServer = new ChatServer();
         ChannelFuture future = chatServer.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
             public void run() {
-                chatServer.destory();
+                chatServer.destroy();
             }
         });
 
@@ -49,7 +63,7 @@ public class ChatServer {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(group)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ChatServerInitializer(channelGroup)) ;
+                .childHandler(new ChatServerInitializer(channelGroup,sslContext)) ;
 
         ChannelFuture future = bootstrap.bind(new InetSocketAddress(PORT));
 
@@ -59,7 +73,8 @@ public class ChatServer {
         return future ;
     }
 
-    private void destory(){
+    private void destroy(){
+        LOGGER.debug("destroy.....");
         if (channel != null){
             channel.close() ;
         }

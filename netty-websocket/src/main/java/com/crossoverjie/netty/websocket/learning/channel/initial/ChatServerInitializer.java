@@ -9,10 +9,14 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
+import javax.net.ssl.SSLEngine;
+
 /**
- * Function:
+ * Function: 支持 SSL
  *
  * @author crossoverJie
  *         Date: 24/02/2018 19:52
@@ -20,15 +24,27 @@ import io.netty.handler.stream.ChunkedWriteHandler;
  */
 public class ChatServerInitializer extends ChannelInitializer<Channel> {
 
+    private SslContext sslContext;
+
     private ChannelGroup group ;
 
     public ChatServerInitializer(ChannelGroup group){
         this.group = group ;
     }
 
+    public ChatServerInitializer(ChannelGroup group,SslContext sslContext){
+        this.group = group ;
+        this.sslContext = sslContext;
+    }
+
     @Override
     protected void initChannel(Channel ch) throws Exception {
+
+        SSLEngine sslEngine = sslContext.newEngine(ch.alloc());
+        sslEngine.setUseClientMode(false);
+
         ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addFirst(new SslHandler(sslEngine)) ;
         //http 服务器请求的 编码器和解码器的聚合
         pipeline.addLast(new HttpServerCodec()) ;
 
