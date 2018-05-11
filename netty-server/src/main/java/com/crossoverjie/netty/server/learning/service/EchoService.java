@@ -41,14 +41,14 @@ public class EchoService {
             serverBootstrap.group(group)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(PORT))
-                    /*.childHandler(new ChannelInitializer() {
+                    .childHandler(new ChannelInitializer() {
 
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
                             channel.pipeline().addLast(handle) ;
                         }
-                    });*/
-                    .childHandler(new HttpPipelineInitializer()) ;
+                    });
+                    //.childHandler(new HttpPipelineInitializer()) ;
 
             ChannelFuture future = serverBootstrap.bind().sync() ;
             future.channel().closeFuture().sync() ;
