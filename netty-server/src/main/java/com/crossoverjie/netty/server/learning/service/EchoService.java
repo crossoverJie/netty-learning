@@ -2,6 +2,7 @@ package com.crossoverjie.netty.server.learning.service;
 
 import com.crossoverjie.netty.server.learning.channel.init.HttpPipelineInitializer;
 import com.crossoverjie.netty.server.learning.handle.EchoServiceHandle;
+import com.crossoverjie.netty.server.learning.handle.TimeServiceHandle;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
@@ -32,7 +33,7 @@ public class EchoService {
 
     private void start() throws InterruptedException {
 
-        final EchoServiceHandle handle = new EchoServiceHandle() ;
+        final TimeServiceHandle handle = new TimeServiceHandle() ;
 
         EventLoopGroup group = new NioEventLoopGroup() ;
 
