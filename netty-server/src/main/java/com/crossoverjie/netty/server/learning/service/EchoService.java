@@ -1,6 +1,7 @@
 package com.crossoverjie.netty.server.learning.service;
 
 import com.crossoverjie.netty.server.learning.channel.init.HttpPipelineInitializer;
+import com.crossoverjie.netty.server.learning.decoder.TimeDecoder;
 import com.crossoverjie.netty.server.learning.handle.EchoServiceHandle;
 import com.crossoverjie.netty.server.learning.handle.TimeServiceHandle;
 import io.netty.bootstrap.ServerBootstrap;
@@ -46,7 +47,9 @@ public class EchoService {
 
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
-                            channel.pipeline().addLast(handle) ;
+                            channel.pipeline()
+                                    .addLast(new TimeDecoder())
+                                    .addLast(handle) ;
                         }
                     });
                     //.childHandler(new HttpPipelineInitializer()) ;
