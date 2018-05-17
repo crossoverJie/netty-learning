@@ -34,13 +34,14 @@ public class EchoService {
 
     private void start() throws InterruptedException {
 
-        final TimeServiceHandle handle = new TimeServiceHandle() ;
+        final EchoServiceHandle handle = new EchoServiceHandle() ;
 
-        EventLoopGroup group = new NioEventLoopGroup() ;
+        EventLoopGroup boss = new NioEventLoopGroup() ;
+        EventLoopGroup work = new NioEventLoopGroup() ;
 
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap() ;
-            serverBootstrap.group(group)
+            serverBootstrap.group(boss,work)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(PORT))
                     .childHandler(new ChannelInitializer() {
@@ -48,7 +49,6 @@ public class EchoService {
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
                             channel.pipeline()
-                                    .addLast(new TimeDecoder())
                                     .addLast(handle) ;
                         }
                     });
@@ -58,7 +58,7 @@ public class EchoService {
             future.channel().closeFuture().sync() ;
 
         }finally {
-            group.shutdownGracefully().sync();
+            work.shutdownGracefully().sync();
         }
     }
 
