@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Function:
@@ -16,13 +17,14 @@ import org.slf4j.Logger;
  */
 public class EchoClientHandle extends SimpleChannelInboundHandler<ByteBuf> {
 
-    private final static Logger LOGGER = org.slf4j.LoggerFactory.getLogger(EchoClientHandle.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(EchoClientHandle.class);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
         //客户端和服务端建立连接时调用
-        ctx.writeAndFlush(Unpooled.copiedBuffer("hello,netty", CharsetUtil.UTF_8)) ;
+        LOGGER.info("已经建立了联系。。");
+        //ctx.writeAndFlush(Unpooled.copiedBuffer("hello,netty", CharsetUtil.UTF_8)) ;
     }
 
     @Override
