@@ -20,6 +20,8 @@ public class CustomerHandleInitializer extends ChannelInitializer<Channel> {
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ch.pipeline()
+                //10 秒没发送消息
+                .addLast(new IdleStateHandler(0, 10, 0))
                 .addLast(new CustomerEncode())
                 .addLast(new EchoClientHandle())
         ;

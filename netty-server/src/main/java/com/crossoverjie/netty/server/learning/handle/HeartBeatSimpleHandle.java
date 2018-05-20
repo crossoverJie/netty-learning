@@ -33,7 +33,7 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
             if (idleStateEvent.state() == IdleState.READER_IDLE){
                 LOGGER.info("已经5秒没有收到信息！");
                 //向客户端发送消息
-                CustomProtocol customProtocol = new CustomProtocol(12345L,"ping") ;
+                CustomProtocol customProtocol = new CustomProtocol(12345L,"pong") ;
                 ctx.writeAndFlush(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8)) ;
             }
 

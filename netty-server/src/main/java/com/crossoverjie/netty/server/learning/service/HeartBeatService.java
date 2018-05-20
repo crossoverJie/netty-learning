@@ -45,6 +45,7 @@ public class HeartBeatService {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
                             ch.pipeline()
+                                    //五秒没有收到消息
                                     .addLast(new IdleStateHandler(5, 0, 0))
                                     .addLast(new CustomDecoder())
                                     .addLast(new HeartBeatSimpleHandle())

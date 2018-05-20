@@ -1,9 +1,12 @@
 package com.crossoverjie.netty.client.learning.handle;
 
+import com.crossoverjie.netty.client.learning.pojo.CustomProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,26 @@ import org.slf4j.LoggerFactory;
 public class EchoClientHandle extends SimpleChannelInboundHandler<ByteBuf> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EchoClientHandle.class);
+
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+
+        if (evt instanceof IdleStateEvent){
+            IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
+
+            if (idleStateEvent.state() == IdleState.WRITER_IDLE){
+                LOGGER.info("已经 10 秒没有发送信息！");
+                //向客户端发送消息
+                CustomProtocol customProtocol = new CustomProtocol(45678L,"ping") ;
+                ctx.writeAndFlush(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8)) ;
+            }
+
+
+        }
+
+        super.userEventTriggered(ctx, evt);
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
