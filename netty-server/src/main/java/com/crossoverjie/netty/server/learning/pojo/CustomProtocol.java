@@ -9,14 +9,14 @@ package com.crossoverjie.netty.server.learning.pojo;
  */
 public class CustomProtocol {
 
-    private int header ;
+    private long header ;
     private String content ;
 
-    public int getHeader() {
+    public long getHeader() {
         return header;
     }
 
-    public void setHeader(int header) {
+    public void setHeader(long header) {
         this.header = header;
     }
 
@@ -26,6 +26,14 @@ public class CustomProtocol {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public CustomProtocol(long header, String content) {
+        this.header = header;
+        this.content = content;
+    }
+
+    public CustomProtocol() {
     }
 
     @Override

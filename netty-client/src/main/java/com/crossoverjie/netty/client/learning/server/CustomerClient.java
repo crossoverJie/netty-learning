@@ -35,7 +35,7 @@ public class CustomerClient {
             ChannelFuture future = bootstrap.connect(host, port).sync();
 
             CustomProtocol customProtocol = new CustomProtocol() ;
-            customProtocol.setHeader(99999);
+            customProtocol.setHeader(99999L);
             customProtocol.setContent("你好 netty");
 
             future.channel().writeAndFlush(customProtocol) ;

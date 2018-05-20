@@ -18,7 +18,7 @@ public class CustomDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
-        int header = in.readInt() ;
+        long header = in.readLong() ;
         byte[] bytes = new byte[in.readableBytes()] ;
         in.readBytes(bytes) ;
         String content = new String(bytes) ;

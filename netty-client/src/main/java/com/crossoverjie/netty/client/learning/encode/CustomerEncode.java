@@ -16,7 +16,7 @@ public class CustomerEncode extends MessageToByteEncoder<CustomProtocol> {
     @Override
     protected void encode(ChannelHandlerContext ctx, CustomProtocol msg, ByteBuf out) throws Exception {
 
-        out.writeInt(msg.getHeader()) ;
+        out.writeLong(msg.getHeader()) ;
         out.writeBytes(msg.getContent().getBytes()) ;
 
     }
